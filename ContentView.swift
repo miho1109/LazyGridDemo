@@ -16,40 +16,84 @@ struct ContentView: View {
 //    GridItem(.adaptive(minimum: 60), spacing: 1)
 //  ]
   
-  var columns : [GridItem] {
-    Array(repeating: .init(.flexible(minimum: 60), spacing: 1), count: 34)
+  var rows : [GridItem] {
+    Array(repeating: .init(.flexible(minimum: 60)), count: 34)
   }
+  
+  var columnTitle = [
+    GridItem(.flexible(minimum: 80))
+  ]
+  
+  var rowTitle = [
+    GridItem(.flexible(minimum: 80))
+  ]
+  
   
   var body: some View {
     NavigationView {
       // Scrolling direction changed
-      ScrollView(.vertical, showsIndicators: false) {
-          ScrollView(.horizontal, showsIndicators: false) {
-            
-            // Grid type changed, and parameter name too
-            LazyHGrid(rows: columns, spacing: 1) {
-              // Iterating emojis
-             	
-              ForEach(emojiList.shuffled(), id: \.self) { emoji in
+      VStack(alignment: .leading) {
+        Text("""
+          a
+          b
+          c
+          d
+          """)
+          .padding()
+          .border(Color.black)
+        
+        ScrollView([.vertical, .horizontal] , showsIndicators: true) {
+          
+          VStack(alignment: .leading) {
+            // COLUMN TITLE
+            HStack {
+              Rectangle().stroke(Color.black, lineWidth: 0.5)
+                .frame(minWidth: 180, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+              
+              LazyHGrid(rows: columnTitle){
+                ForEach(0 ..< 120) { item in
                   ZStack {
                     Rectangle().stroke(Color.black, lineWidth: 0.5)
-                    Text(emoji)
-                      .font(.system(size: 40))
-
+                    Text("Column Title")
+//                      .font(.system(size: 40))
                   } //: ZSTACK
-                  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-  //                  .background(
-  //                    Rectangle().stroke(Color.gray, lineWidth: 1)
-  //                  )
-                }
+                  .frame(minWidth: 280, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+                } //: LOOP
+              }
+            } //: HGRID
+            
+            // ROW TITLE
+            HStack(alignment: .top) {
+              LazyVGrid(columns: rowTitle){
+                ForEach(0 ..< 34) { item in
+                  ZStack {
+                    Rectangle().stroke(Color.black, lineWidth: 0.5)
+                    Text("Row Title")
+//                      .font(.system(size: 40))
+                  } //: ZSTACK
+                  .frame(minWidth: 180, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+                } //: LOOP
+              } //: HGRID
               
-            } //: LAZYHGRID
-            .padding(.all, 6) // Padding added, "Enhancement".
-            .frame(minWidth: 700, maxWidth: .infinity, minHeight: 700, maxHeight: .infinity, alignment: .center)
-          } //: SCROLLVIEW
-          
+              //TABLE CONTENT 34:120
+              LazyHGrid(rows: rows) {
+                  // Iterating emojis
+                    ForEach(emojiList.shuffled(), id: \.self) { emoji in
+                        ZStack {
+                            Rectangle().stroke(Color.black, lineWidth: 0.5)
+                            Text(emoji)
+//                              .font(.system(size: 40))
+                          } //: ZSTACK
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                      
+                    } //: LOOP
+                } //: GRID
+              .frame(minWidth: 700, maxWidth: .infinity, minHeight: 700, maxHeight: .infinity, alignment: .center)
+            } //: HSTACK
+          } //: VSTACK
+        } //: SCROLLVIEW
+        .navigationBarTitle("Table 34:102")
       }
-      .navigationBarTitle("Smileys")
     }
   }
 }
@@ -57,5 +101,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
+      .previewDevice("iPhone 11")
   }
 }
