@@ -17,7 +17,7 @@ struct ContentView: View {
 //  ]
   
   var rows : [GridItem] {
-    Array(repeating: .init(.flexible(minimum: 60)), count: 34)
+    Array(repeating: .init(.flexible(minimum: 60), spacing: 1), count: 34)
   }
   
   var columnTitle = [
@@ -44,50 +44,49 @@ struct ContentView: View {
         
         ScrollView([.vertical, .horizontal] , showsIndicators: true) {
           
-          VStack(alignment: .leading) {
+          VStack(alignment: .leading, spacing: 1) {
             // COLUMN TITLE
-            HStack {
+            LazyHStack(spacing: 1) {
               Rectangle().stroke(Color.black, lineWidth: 0.5)
-                .frame(minWidth: 180, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+                .frame(minWidth: 119, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
               
-              LazyHGrid(rows: columnTitle){
+              LazyHGrid(rows: columnTitle, spacing: 1){
                 ForEach(0 ..< 120) { item in
                   ZStack {
                     Rectangle().stroke(Color.black, lineWidth: 0.5)
                     Text("Column Title")
 //                      .font(.system(size: 40))
                   } //: ZSTACK
-                  .frame(minWidth: 280, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+                  .frame(minWidth: 119, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
                 } //: LOOP
               }
             } //: HGRID
             
             // ROW TITLE
-            HStack(alignment: .top) {
-              LazyVGrid(columns: rowTitle){
+            LazyHStack(alignment: .top, spacing: 1) {
+              LazyVGrid(columns: rowTitle, spacing: 1){
                 ForEach(0 ..< 34) { item in
                   ZStack {
                     Rectangle().stroke(Color.black, lineWidth: 0.5)
                     Text("Row Title")
 //                      .font(.system(size: 40))
                   } //: ZSTACK
-                  .frame(minWidth: 180, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
+                  .frame(minWidth: 119, maxWidth: .infinity, minHeight: 60, idealHeight: 60, maxHeight: 60, alignment: .center)
                 } //: LOOP
               } //: HGRID
               
               //TABLE CONTENT 34:120
-              LazyHGrid(rows: rows) {
-                  // Iterating emojis
-                    ForEach(emojiList.shuffled(), id: \.self) { emoji in
-                        ZStack {
-                            Rectangle().stroke(Color.black, lineWidth: 0.5)
-                            Text(emoji)
+              LazyHGrid(rows: rows, spacing: 1) {
+                // Iterating emojis
+                ForEach(emojiList.shuffled(), id: \.self) { emoji in
+                    ZStack {
+                        Rectangle().stroke(Color.black, lineWidth: 0.5)
+                        Text(emoji)
 //                              .font(.system(size: 40))
-                          } //: ZSTACK
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                      
-                    } //: LOOP
-                } //: GRID
+                    } //: ZSTACK
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                  } //: LOOP
+              } //: GRID
               .frame(minWidth: 700, maxWidth: .infinity, minHeight: 700, maxHeight: .infinity, alignment: .center)
             } //: HSTACK
           } //: VSTACK
